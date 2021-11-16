@@ -1,0 +1,101 @@
+# ------------------------------------------------------------------------ #
+# Title: Assignment 05
+# Description: Working with Dictionaries and Files
+#              When the program starts, load each "row" of data
+#              in "ToDoList.txt" into a python Dictionary.
+#              Add the each dictionary "row" to a python list "table"
+# ChangeLog (Who,When,What):
+# RRoot,1.1.2030,Created started script
+# KWong, 11.14.2021, Added code to complete assignment 5
+# Kwong, 11.15.2021, Committed changes
+# ------------------------------------------------------------------------ #
+
+# declare variables and constants
+objFile = "ToDoList.txt"   # An object that represents a file
+strData = ''  # A row of text data from the file
+dicRow = {}    # A row of data separated into elements of a dictionary {Task,Priority}
+strChoice = '' # A Capture the user option selection
+
+
+# -- Processing -- #
+# Step 1 - When the program starts, load the any data you have. If none, print "No data found!"
+try:
+    strFile = open(objFile, 'r')
+    for row in strFile:
+        lstRow = row.split(' - ')
+        task = lstRow[0]
+        priority = lstRow[1].strip()
+        dicRow[task] = priority
+except:
+    print("No data found!")
+
+# -- Input/Output -- #
+# Step 2 - Display a menu of choices to the user
+while (True):
+    print("""
+    Menu of Options
+    1) Show current data
+    2) Add a new item.
+    3) Remove an existing item.
+    4) Save Data to File
+    5) Exit Program
+    """)
+    # waiting on selected option from user.
+    strChoice = str(input('Which option would you like to perform? [1 to 5] - '))
+    # adding a new line for looks
+    print()
+
+    # Step 3 - Option 1 selected. Show the current items in the table
+    if (strChoice.strip() == '1'):
+        # if text file is not empty, format task - priority
+        if dicRow != {}:
+            for task, priority in dicRow.items():
+                print(task, ' - ',  priority)
+        # otherwise, print below message.
+        else:
+            print('Please provide some data first!')
+        continue
+
+    # Step 4 - Add a new item to the list/Table
+    elif (strChoice.strip() == '2'):
+        # request task needed
+        task = str(input('What task do you want me to add?: '))
+        # if task is not already in the dictionary, wr
+        if task not in dicRow:
+            # request priority of task
+            priority = str(input('\nWhat is the priority of this task?: '))
+            # set task to priority in dictionary
+            dicRow[task] = priority
+            # inform task has been added
+            print('\n', task, 'has been added.')
+        # otherwise, print below message.
+        else:
+            print('\nThat task already exists! Try again.')
+        continue
+
+    # Step 5 - Remove a new item from the list/Table
+    elif (strChoice.strip() == '3'):
+        task = input('What task would you like me to delete?: ')
+        if task in dicRow:
+            del dicRow[task]
+            print('n\Okay, I deleted', task)
+        else:
+            print('\nTask not found.')
+        continue
+
+    # Step 6 - Save tasks to the ToDoToDoList.txt file
+    elif (strChoice.strip() == '4'):
+        # open file and format provided data as: task - priority
+        with open(objFile, 'w') as f:
+            for task, priority in dicRow.items():
+                format_dictionary = "{tname} - {pname}\n".format(tname = task, pname = priority)
+                f.write(str(format_dictionary))
+        #close file
+        f.close()
+        # print below message
+        print('Data saved!')
+        continue
+    # Step 7 - Exit program
+    elif (strChoice.strip() == '5'):
+        print("Program closing")
+        break  # and Exit the program
