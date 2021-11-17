@@ -8,10 +8,12 @@
 # RRoot,1.1.2030,Created started script
 # KWong, 11.14.2021, Added code to complete assignment 5
 # Kwong, 11.15.2021, Committed changes
+# KWong, 11.16.2021, Fixed Step 1
 # ------------------------------------------------------------------------ #
+import os
 
 # declare variables and constants
-objFile = "ToDoList.txt"   # An object that represents a file
+objFile =os.path.join(os.path.dirname(__file__),  'ToDoList.txt') # An object that represents a file
 strData = ''  # A row of text data from the file
 dicRow = {}    # A row of data separated into elements of a dictionary {Task,Priority}
 strChoice = '' # A Capture the user option selection
@@ -26,8 +28,10 @@ try:
         task = lstRow[0]
         priority = lstRow[1].strip()
         dicRow[task] = priority
+    for task, priority in dicRow.items():
+        print(task, ' - ', priority)
 except:
-    print("No data found!")
+    print('No data found!')
 
 # -- Input/Output -- #
 # Step 2 - Display a menu of choices to the user
@@ -61,7 +65,7 @@ while (True):
         # request task needed
         task = str(input('What task do you want me to add?: '))
         # if task is not already in the dictionary, wr
-        if task not in dicRow:
+        if (task not in dicRow):
             # request priority of task
             priority = str(input('\nWhat is the priority of this task?: '))
             # set task to priority in dictionary
@@ -76,7 +80,7 @@ while (True):
     # Step 5 - Remove a new item from the list/Table
     elif (strChoice.strip() == '3'):
         task = input('What task would you like me to delete?: ')
-        if task in dicRow:
+        if (task in dicRow):
             del dicRow[task]
             print('n\Okay, I deleted', task)
         else:
@@ -88,7 +92,7 @@ while (True):
         # open file and format provided data as: task - priority
         with open(objFile, 'w') as f:
             for task, priority in dicRow.items():
-                format_dictionary = "{tname} - {pname}\n".format(tname = task, pname = priority)
+                format_dictionary = '{tname} - {pname}\n'.format(tname = task, pname = priority)
                 f.write(str(format_dictionary))
         #close file
         f.close()
@@ -97,5 +101,5 @@ while (True):
         continue
     # Step 7 - Exit program
     elif (strChoice.strip() == '5'):
-        print("Program closing")
+        print('Program closing')
         break  # and Exit the program
