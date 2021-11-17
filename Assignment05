@@ -10,10 +10,9 @@
 # Kwong, 11.15.2021, Committed changes
 # KWong, 11.16.2021, Fixed Step 1
 # ------------------------------------------------------------------------ #
-import os
 
 # declare variables and constants
-objFile =os.path.join(os.path.dirname(__file__),  'ToDoList.txt') # An object that represents a file
+objFile = 'ToDoList.txt' # An object that represents a file
 strData = ''  # A row of text data from the file
 dicRow = {}    # A row of data separated into elements of a dictionary {Task,Priority}
 strChoice = '' # A Capture the user option selection
@@ -79,6 +78,9 @@ while (True):
 
     # Step 5 - Remove a new item from the list/Table
     elif (strChoice.strip() == '3'):
+        if dicRow != {}:
+            for task, priority in dicRow.items():
+                print(task)
         task = input('What task would you like me to delete?: ')
         if (task in dicRow):
             del dicRow[task]
